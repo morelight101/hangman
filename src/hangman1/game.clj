@@ -16,44 +16,16 @@
   [game]
   (or (game-won? game) (game-lost? game)))
 
-;; @Nico: Die Funktion ist nicht pure. Du möchtest als Programmierer, der diese Schicht nutzt, ein neues Spiel anlegen können. Wie kann das pure gehen?
-;; @Ingo
-;; pure bedeutet: no side-effects + same input -> same output
-;; Irgendwo muss aber das word-to-guess ändern;
-;; Vorschlag 1: insert-rand-word! wird nach new-game aufgerufen
-;; Vorschlag 2: word-to-guess aus dem game auslagern
-;; Warum Vorschlag 1 ?
-;; Daten die zusammengehören, sollen zusammenbleiben zwecks Verständlichkeit für den Programmierer.
-;; Pure functions sollen gleichfalls das Verständnis erleichtern, deshalb
-;; dezidierter (= easily testable) Zustand zu Beginn, der anschliessend
-;; impure wird. 
-
 (defn new-game
   "creates a new game map"
-  []
-  {:word-to-guess "Test"
+  [word-to-guess]
+  {:word-to-guess  word-to-guess
    :correct-guesses '#{}
    :tries-left 5})
 
-(defn insert-rand-word!
-  "selects a random word and makes it available to the game"
-  [game]
-  (assoc-in game  [:word-to-guess] (nth ["Palm" "Tree" "Vacation"] (rand-int 3))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(defn guess-letter
+  "returns an updated game reflecting whether the letter the user guessed was contained in the word-to-guess"
+  [user-input game]
+  (if (contains?  (set (map  str (seq (:word-to-guess game)))) user-input)
+    (update-in game [:correct-guesses] conj user-input)
+    (update-in game [:tries-left] dec)))
