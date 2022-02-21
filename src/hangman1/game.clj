@@ -1,6 +1,7 @@
 (ns game
   (:require [clojure.string :refer [split]]))
 
+;; @Nico: Das Repro ist ein bisschen unaufgeräumt.
 
   ;; {:global
   ;;  {:word-population ["Palm" "Tree" "guide"]
@@ -26,6 +27,8 @@
   [game]
   (or (game-won? game) (game-lost? game)))
 
+
+;; @Nico: Die Funktion ist nicht pure. Du möchtest als Programmierer, der diese Schicht nutzt, ein neues Spiel anlegen können. Wie kann das pure gehen?
 
 (defn new-game!
   "creates a new game map"
