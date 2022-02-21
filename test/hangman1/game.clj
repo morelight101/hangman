@@ -1,6 +1,7 @@
 (ns hangman1.game-test
   (:require [clojure.test :refer :all]
-            [hangman1.game :refer :all]))
+            [game :refer :all]))
+
 ;ein verlorenes Spiel (der Spieler konnte das Wort nicht erraten)
 (def game-lost
  { :word-to-be-guessed ""
@@ -22,37 +23,35 @@
    :tries-left 0}
   )
 
-(deftest game-won?
+
+(deftest f-game-won
   (testing "game-lost?"
-    (=  true  (game-won? game-won ))
-    (=  false (game-won? game-lost ))
-    (=  false (game-won? game-ongoing ))
-    )
+    (is true  (game-won? game-won ))
+    (is false (game-won? game-lost ))
+    (is false (game-won? game-ongoing))))
 
 
-(deftest game-lost?
+
+
+(deftest f-game-lost
   (testing "game-lost?"
-    (=  false (game-lost? game-won ))
-    (=  true  (game-lost? game-lost ))
-    (=  false (game-lost? game-ongoing ))
+    (is false (game-lost? game-won ))
+    (is  true  (game-lost? game-lost ))
+    (is  false (game-lost? game-ongoing ))
     )
+)
+
+(deftest f-game-over
+  (testing "game-over?")
+    (is  false (game-lost? game-won ))
+    (is  true  (game-lost? game-lost ))
+    (is  false (game-lost? game-ongoing))
+  )
 
 
-(deftest game-over?
-  (testing "")
-    (=  false (game-lost? game-won ))
-    (=  true  (game-lost? game-lost ))
-  (=  false (game-lost? game-ongoing ))
-
-
-
-
-(deftest new-game
-  "creates a new game map, word to be guessed is set to '' to keep the function pure"
-  [gamedata]
-  (assoc gamedata
-         :word-to-be-guessed ""
-         :correct-guesses 0
-         :tries-left 5))
+(deftest f-new-game
+  (testing "new-game"
+    (is = ((new-game! gamedata) gamedata)))
+  )
 
 
