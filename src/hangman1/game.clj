@@ -27,12 +27,13 @@
 (defn guess-letter
   "returns an updated game reflecting whether the letter the user guessed was contained in the word-to-guess;
   is the game over, the function returns the game state without change"
-  [game letter]
+  [{:keys [word-to-guess correct-guesses tries-left] :as game} letter]
   (cond
     (game-over? game) game
-    (includes?  (:word-to-guess game) letter)
+    (not-empty (filter #{letter} word-to-guess))
     (update-in game [:correct-guesses] conj letter)
     :else     (update-in game [:tries-left] dec)))
+
 
 (defn score
   "returns the current score"
@@ -46,7 +47,8 @@
   [{:keys [word-to-guess correct-guesses]}]
   (mapv
    correct-guesses
-   (split word-to-guess #"\B")))
+   split word-to-guess ))
+
 
 
 
