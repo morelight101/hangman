@@ -40,17 +40,18 @@
   (* 8 (count correct-guesses )))
 
 
-
 (defn hint
   "returns a vector of correctly guessed letters in correct position;
   not yet correctly guessed letters are indicated by nil"
   [{:keys [word-to-guess correct-guesses]}]
-  (map
-   #(if
-        (correct-guesses %)
-      %
-      nil)
+  (mapv
+   correct-guesses
    (split word-to-guess #"\B")))
+
+
+
+
+
 
 
 
