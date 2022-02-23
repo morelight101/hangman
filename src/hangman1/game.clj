@@ -18,7 +18,7 @@
   (or (game-won? game) (game-lost? game)))
 
 (defn new-game
-  "creates a new game map"
+  "creates a new game map, parameter is a vector of chars"
   [word-to-guess]
   {:word-to-guess  word-to-guess
    :correct-guesses '#{}
