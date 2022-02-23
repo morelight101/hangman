@@ -47,7 +47,7 @@
   [{:keys [word-to-guess correct-guesses]}]
   (map
    #(if
-        (contains? correct-guesses %)
+        (correct-guesses %)
       %
       nil)
    (split word-to-guess #"\B")))
