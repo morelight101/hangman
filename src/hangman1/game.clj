@@ -1,6 +1,5 @@
 (ns game
-  (:require [clojure.string :refer [split includes? starts-with?]]
-            [clojure.set    :refer [subset?]]))
+  (:require [clojure.string :refer [includes?]]))
 
 (defn game-won?
   "Liefert true, wenn der Spieler das Spiel `game `gewonnen hat, andernfalls false. "
@@ -24,22 +23,27 @@
    :correct-guesses '#{}
    :tries-left 5})
 
+(defn word->letters
+  "Converts between a string and an array of chars"
+  [word]
+  (mapv str word))
+
 (defn guess-letter
   "returns an updated game reflecting whether the letter the user guessed was contained in the word-to-guess;
   is the game over, the function returns the game state without change"
   [{:keys [word-to-guess correct-guesses tries-left] :as game} letter]
   (cond
     (game-over? game) game
-    (not-empty (filter #{letter} word-to-guess))
+    (includes? word-to-guess letter)
     (update-in game [:correct-guesses] conj letter)
     :else     (update-in game [:tries-left] dec)))
-
 
 (defn score
   "returns the current score"
   [{:keys [correct-guesses]}]
-  (* 8 (count correct-guesses )))
-
+  (-> correct-guesses
+      (count)
+      (*8)))
 
 (defn hint
   "returns a vector of correctly guessed letters in correct position;
@@ -47,7 +51,7 @@
   [{:keys [word-to-guess correct-guesses]}]
   (mapv
    correct-guesses
-   split word-to-guess ))
+   (word->letters word-to-guess)))
 
 
 
