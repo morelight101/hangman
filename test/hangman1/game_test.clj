@@ -48,7 +48,7 @@
 
 (deftest f-game-over
   (testing "`game-over?`"
-    (is (= false (game-over? game-won)))
+    (is (= true (game-over? game-won)))
     (is (= true  (game-over? game-lost)))
     (is (= false (game-over? game-new)))
     (is (= false (game-over? game-ongoing)))))
