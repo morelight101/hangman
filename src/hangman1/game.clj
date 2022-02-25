@@ -2,15 +2,18 @@
   (:require [clojure.string :refer [includes?]]))
 
 (defn word->letters
-  "Converts a string to an array of chars"
+  "Converts a string to an array of chars."
   [word]
   (mapv str word))
 
 (defn game-won?
   "Liefert true, wenn der Spieler das Spiel `game` gewonnen hat,
-  andernfalls false. "
+  andernfalls false."
   [{:keys [word-to-guess correct-guesses]}]
-  (= (into #{} (word->letters word-to-guess)) correct-guesses))
+  (= (->>
+      (word->letters word-to-guess)
+      (set))
+     correct-guesses))
 
 (defn game-lost?
   "Returns true if player lost, otherwise false."
@@ -19,12 +22,12 @@
 
 (defn game-over?
   "Returns true if user guessed the word or has no `tries-left`,
-  otherwise false.See also [[game-won?]] and [[game-lost?]]"
+  otherwise false. See also [[game-won?]] and [[game-lost?]]."
   [game]
   (or (game-won? game) (game-lost? game)))
 
 (defn new-game
-  "creates a new `game`, parameter is a string"
+  "Creates a new `game`, parameter is a string."
   [word-to-guess]
   {:word-to-guess  word-to-guess
    :correct-guesses '#{}
@@ -54,7 +57,6 @@
   incorrectly guessed letters are indicated by nil."
   [{:keys [word-to-guess correct-guesses]}]
   (->>
-      word-to-guess
-      (word->letters)
-      (mapv correct-guesses)
-      ))
+   word-to-guess
+   (word->letters)
+   (mapv correct-guesses)))

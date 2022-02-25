@@ -1,7 +1,6 @@
 (ns hangman1.game-test
   (:require [clojure.test :refer [deftest is testing]]
-            [game :refer :all]))
-
+            [hangman1.game :as sut]))
 
 ;ein verlorenes Spiel (der Spieler konnte das Wort nicht erraten)
 (def game-lost
@@ -27,43 +26,43 @@
    :correct-guesses #{}
    :tries-left 5})
 
-(deftest f-word->letters
+(deftest word->letters
   (testing "`word->letters`"
     (is (= ["t" "r" "e" "e"]
-           (word->letters "tree")))))
+           (sut/word->letters "tree")))))
 
-(deftest f-game-won
+(deftest game-won
   (testing "`game-won`"
-    (is (= true  (game-won? game-won)))
-    (is (= false (game-won? game-lost)))
-    (is (= false (game-won? game-new)))
-    (is (= false (game-won? game-ongoing)))))
+    (is (= true  (sut/game-won? game-won)))
+    (is (= false (sut/game-won? game-lost)))
+    (is (= false (sut/game-won? game-new)))
+    (is (= false (sut/game-won? game-ongoing)))))
 
-(deftest f-game-lost
+(deftest game-lost
   (testing "`game-lost?`"
-    (is (= false (game-lost? game-won)))
-    (is (= false (game-lost? game-new)))
-    (is (= true  (game-lost? game-lost)))
-    (is (= false (game-lost? game-ongoing)))))
+    (is (= false (sut/game-lost? game-won)))
+    (is (= false (sut/game-lost? game-new)))
+    (is (= true  (sut/game-lost? game-lost)))
+    (is (= false (sut/game-lost? game-ongoing)))))
 
-(deftest f-game-over
+(deftest game-over
   (testing "`game-over?`"
-    (is (= true (game-over? game-won)))
-    (is (= true  (game-over? game-lost)))
-    (is (= false (game-over? game-new)))
-    (is (= false (game-over? game-ongoing)))))
+    (is (= true  (sut/game-over? game-won)))
+    (is (= true  (sut/game-over? game-lost)))
+    (is (= false (sut/game-over? game-new)))
+    (is (= false (sut/game-over? game-ongoing)))))
 
-(deftest f-new-game
-  (testing "does `new-game` 'tree' return the proper map"
-    (is = ((new-game "tree") game-new))))
+(deftest new-game
+  (testing "does `new-game` 'tree' return a map
+             correctly reflecting this input"
+    (is = ((sut/new-game "tree") game-new))))
 
-(deftest f-hint
+(deftest hint
   (testing "will `hint` return correct vector for `word-to-guess` `tree`
             and `:correct-guesses` `#{'t'}` "
-    (is (= ["t" nil nil nil] (hint game-ongoing) ))))
+    (is (= ["t" nil nil nil] (sut/hint game-ongoing) ))))
 
-
-(deftest f-score
+(deftest score
   (testing "does `score` compute correctly"
-    (is (= 0  (score (new-game "tree"))))
-    (is (= 24 (score game-won)))))
+    (is (= 0  (sut/score (sut/new-game "tree"))))
+    (is (= 24 (sut/score game-won)))))
