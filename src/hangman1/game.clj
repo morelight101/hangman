@@ -91,7 +91,7 @@
    ["e" "n" "s" "t" "r" "o" "i" "l" "k"]))
 
 ;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
-;; Ergebnis von score auf die Spielzustände
+;; Ergebnis von hint auf die Spielzustände
 (comment
   (map #(hint %)
        (reductions
