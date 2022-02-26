@@ -8,7 +8,8 @@
 
 (defn game-won?
   "Liefert true, wenn der Spieler das Spiel `game` gewonnen hat,
-  andernfalls false."
+  andernfalls false.
+  See also [[game-over?]]"
   [{:keys [word-to-guess correct-guesses]}]
   (= (->>
       (word->letters word-to-guess)
@@ -16,12 +17,13 @@
      correct-guesses))
 
 (defn game-lost?
-  "Returns true if player lost, otherwise false."
+  "Returns true if player lost, otherwise false.
+  See also [[game-over?]]"
   [{:keys [tries-left]}]
   (zero? tries-left))
 
 (defn game-over?
-  "Returns true if user guessed the word or has no `tries-left`,
+  "Returns true if user guessed the word or has no tries-left,
   otherwise false. See also [[game-won?]] and [[game-lost?]]."
   [game]
   (or (game-won? game) (game-lost? game)))
@@ -30,7 +32,7 @@
   "Creates a new `game`, parameter is a string."
   [word-to-guess]
   {:word-to-guess  word-to-guess
-   :correct-guesses '#{}
+   :correct-guesses #{}
    :tries-left 5})
 
 (defn guess-letter
@@ -42,7 +44,7 @@
   (cond
     (game-over? game) game
     (includes? word-to-guess letter)
-    (update game :correct-guesses (conj letter))
+    (update game :correct-guesses conj letter)
     :else (update game :tries-left dec)))
 
 (defn score
@@ -60,3 +62,48 @@
    word-to-guess
    (word->letters)
    (mapv correct-guesses)))
+
+(defn myguess
+  "version 2"
+  [letterv game]
+  (if
+   (= letterv [])
+    game
+    (do (myguess
+         (rest letterv)
+         (guess-letter game (first letterv))) (println game))))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Das Ergebnis ist der daraus resultierende Spielzustsand.
+(comment
+  (reduce
+   guess-letter
+   (new-game "doctronic")
+   ["e" "n" "s" "t" "r" "o" "i" "l" "k"]))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Das Ergebnis sind  alle  Spielzustände, die sich aus den geratenen
+;; Buchstaben ergeben
+(comment
+  (reductions
+   guess-letter
+   (new-game "doctronic")
+   ["e" "n" "s" "t" "r" "o" "i" "l" "k"]))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Ergebnis von score auf die Spielzustände
+(comment
+  (map #(hint %)
+       (reductions
+        guess-letter
+        (new-game "doctronic")
+        ["e" "n" "s" "t" "r" "o" "i" "l" "k"])))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Ergebnis von score auf die Spielzustände
+(comment
+  (map #(score %)
+       (reductions
+        guess-letter
+        (new-game "doctronic")
+        ["e" "n" "s" "t" "r" "o" "i" "l" "k"])))

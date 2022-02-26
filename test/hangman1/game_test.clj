@@ -55,7 +55,7 @@
 (deftest new-game
   (testing "does `new-game` 'tree' return a map
              correctly reflecting this input"
-    (is = ((sut/new-game "tree") game-new))))
+    (is (= (sut/new-game "tree") game-new))))
 
 (deftest hint
   (testing "will `hint` return correct vector for `word-to-guess` `tree`
@@ -66,3 +66,11 @@
   (testing "does `score` compute correctly"
     (is (= 0  (sut/score (sut/new-game "tree"))))
     (is (= 24 (sut/score game-won)))))
+
+(deftest guess-letter
+  (testing "does it update the game correctly"
+    (is (= (sut/guess-letter (new-game "tree") "t")
+           {:word-to-guess "tree"
+            :correct-guesses #{"t"}
+            :tries-left 5}))))
+
