@@ -107,3 +107,48 @@
         guess-letter
         (new-game "doctronic")
         ["e" "n" "s" "t" "r" "o" "i" "l" "k"])))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Ergebnis von score und hint auf die Spielzustände
+;; [(0 [nil nil nil nil nil nil nil nil nil])
+;; (0 [nil nil nil nil nil nil nil nil nil])
+;; (8 [nil nil nil nil nil nil "n" nil nil])
+;; (8 [nil nil nil nil nil nil "n" nil nil])
+;; (16 [nil nil nil "t" nil nil "n" nil nil])
+;; (24 [nil nil nil "t" "r" nil "n" nil nil])
+;; (32 [nil "o" nil "t" "r" "o" "n" nil nil])
+;; (40 [nil "o" nil "t" "r" "o" "n" "i" nil])
+;; (40 [nil "o" nil "t" "r" "o" "n" "i" nil])
+;; (40 [nil "o" nil "t" "r" "o" "n" "i" nil])]
+(comment
+  (mapv list
+        (map #(score %)
+                 (reductions
+                  guess-letter
+                  (new-game "doctronic")
+                  ["e" "n" "s" "t" "r" "o" "i" "l" "k"]))
+        (map #(hint %1)
+            (reductions
+             guess-letter
+             (new-game "doctronic")
+             ["e" "n" "s" "t" "r" "o" "i" "l" "k"]))))
+
+;; Zu ratendes Wort: "Doctronic". Geratene Buchstaben: e n s t r o i l k
+;; Ergebnis von score und hint auf die Spielzustände
+(comment
+  (map
+   (juxt  score hint)
+   (reductions
+    guess-letter
+    (new-game "doctronic")
+    ["e" "n" "s" "t" "r" "o" "i" "l" "k"])))
+;;([0 [nil nil nil nil nil nil nil nil nil]]
+;; [0 [nil nil nil nil nil nil nil nil nil]]
+; ;[8 [nil nil nil nil nil nil "n" nil nil]]
+;; [8 [nil nil nil nil nil nil "n" nil nil]]
+;; [16 [nil nil nil "t" nil nil "n" nil nil]]
+;; [24 [nil nil nil "t" "r" nil "n" nil nil]]
+;; [32 [nil "o" nil "t" "r" "o" "n" nil nil]]
+;; [40 [nil "o" nil "t" "r" "o" "n" "i" nil]]
+;; [40 [nil "o" nil "t" "r" "o" "n" "i" nil]]
+;; [40 [nil "o" nil "t" "r" "o" "n" "i" nil]])
